@@ -1,7 +1,7 @@
 import "./Editor.css";
 import Emotionitem from "./EmotionItem";
 import Button from "./Button";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
 const emotionList = [
@@ -44,8 +44,18 @@ const getStringDate = (targetDate) => {
     return `${year}-${month}-${date}`;
 }
 
-const Editor = ({onSubmit}) => {
+const Editor = ({initData, onSubmit}) => {
     const nav = useNavigate();
+
+    // 기존 일기 불러오는 코드
+    useEffect(() => {
+        if (initData){
+            setInput({
+                ...initData,
+                ['createDate'] : new Date(Number(initData.createDate))
+            });
+        }
+    }, [initData]);
 
 
     const [input, setInput] = useState({
