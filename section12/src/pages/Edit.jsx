@@ -4,13 +4,13 @@ import Editor from "./../components/Editor";
 import { useNavigate, useParams } from "react-router-dom";
 import { useContext, useEffect, useState } from "react";
 import { DiaryDispatchContext, DiaryStateContext } from "../App";
+import useDiary from "./../hooks/useDiary";
 
 const Edit = () => {
     const params = useParams();
     const nav = useNavigate();
     const {onUpdate, onDelete} = useContext(DiaryDispatchContext);
-    const data = useContext(DiaryStateContext);
-    const [curDiaryItem, setCurDiaryItem] = useState();
+    const curDiaryItem = useDiary(params.id);
 
     // 삭제 버튼
     const onClickDelete = () => {
@@ -21,26 +21,6 @@ const Edit = () => {
             nav("/", {replace : true}); // 뒤로가기 방지
         }
     };
-
-    // mount 될때, prarms.id가 바뀔때 실행
-    useEffect(() => {
-        const currentDiaryItem = data.find((item) => String(item.id) === String(params.id));
-    
-        if (!currentDiaryItem){
-            window.alert("존재하지 않는 일기입니다.");
-            nav("/",{ replace: true }); 
-        } 
-        
-        setCurDiaryItem(currentDiaryItem);  // state에 현재 아이템 저장
-
-    }, [params.id]);
-
-    /*
-        nav는 컴포넌트가 mount 된 후에 작동할 수 있음.
-        현재 이 라인은 컴포넌트 mount 전에 작동하기때문에 nav 작동 X
-        따라서 getCurrentDiaryItem 함수는 useEffect 안에 넣어줘야함.
-    */
-    // const currentDiaryItem = getCurrentDiaryItem();
 
     // 수정 버튼
     const onSubmit = (input) => {
