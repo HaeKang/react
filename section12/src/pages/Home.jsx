@@ -5,6 +5,8 @@ import Header from "./../components/Haeder";
 import Button from "./../components/Button";
 import DiaryList from "../components/DiaryList";
 
+import usePageTitle from "../hooks/usePageTitle";
+
 // 해당하는 달에 쓴 데이터만 뽑기
 const getMonthlyData = (pivotDate, data) => {
     const beginTime = new Date(pivotDate.getFullYear(), pivotDate.getMonth(), 1, 0, 0, 0).getTime();
@@ -19,6 +21,8 @@ const Home = () => {
     const [pivotDate, setPivotDate] = useState(new Date()); // 날짜 state
 
     const monthlyData = getMonthlyData(pivotDate, data);    // 필터링이 된 데이터들
+
+    usePageTitle('감정 일기장');
 
 
     const onIncreaseMonth = () => {
